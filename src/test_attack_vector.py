@@ -1,12 +1,18 @@
 import pickle
 import sys
-import time
 from tqdm import tqdm
 import numpy as np
 import matplotlib.pyplot as plt
+import argparse
 
 from server import ADMIN_PASSWORD
 from timing_attack import send_request
+
+"""
+I was unsure at first if a timing attack would be possible so i tried
+requesting the back with the full password and a wrong password to get
+the maximum time difference possible
+"""
 
 WRONG_PASSWORD = "jtyikjoyipodgdfi"
 
@@ -34,7 +40,7 @@ def test_attack_vector(iterations=100_000):
 
 
 def plot_times(times, **kwargs):
-    rounded = np.round(times, decimals=5)
+    rounded = np.round(times, decimals=6)
 
     unique, counts = np.unique(
         rounded, return_counts=True)
@@ -61,13 +67,23 @@ def plot(correct, wrong):
 
 
 if __name__ == "__main__":
-    if "run" in sys.argv:
-        c, w = test_attack_vector()
+    parser = argparse.ArgumentParser(description='A test on timing attacks.')
+    parser.add_argument(
+        "-c", "--command",
+        help="either run to start sending requests or plot to plot the obtained results",
+        default="run")
+    parser.add_argument(
+        "-r", "--requests", help="the number of requests to send",
+        default=100_000, type=int)
+    args = parser.parse_args()
+
+    if args.command == "run":
+        c, w = test_attack_vector(args.requests)
         with open("correct.data", "wb") as f:
             pickle.dump(c, f)
         with open("wrong.data", "wb") as f:
             pickle.dump(w, f)
-    elif "plot" in sys.argv:
+    elif args.command == "plot":
         c = []
         w = []
         with open("correct.data", "rb") as f:
@@ -76,4 +92,4 @@ if __name__ == "__main__":
             w = pickle.load(f)
         plot(c, w)
     else:
-        print("need run or plot in program args")
+        print("need a command")
