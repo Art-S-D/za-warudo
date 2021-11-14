@@ -24,14 +24,13 @@ def test_attack_vector(iterations=100_000):
     correct_times = []
     wrong_times = []
 
-    with tqdm(range(iterations)) as pbar:
-        for i in pbar:
-            _, t = send_request(ADMIN_PASSWORD)
-            correct_password_time += t
-            correct_times.append(t)
-            _, t = send_request(WRONG_PASSWORD)
-            wrong_times.append(t)
-            wrong_password_time += t
+    for i in tqdm(range(iterations)):
+        _, t = send_request(ADMIN_PASSWORD)
+        correct_password_time += t
+        correct_times.append(t)
+        _, t = send_request(WRONG_PASSWORD)
+        wrong_times.append(t)
+        wrong_password_time += t
     print("Correct password verification time: ",
           correct_password_time/iterations)
     print("Wrong password verification time: ", wrong_password_time/iterations)
