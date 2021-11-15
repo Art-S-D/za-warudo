@@ -11,6 +11,8 @@ If the server is slow enough, there should be a few milliseconds of difference.
 
 Simply compare strings with the hmac.compare_digest function to protect against this sort of attack.
 
+You can read [rapport.pdf](https://github.com/Art-S-D/za-warudo/blob/master/rapport.pdf) for more infos.
+
 ## Run the project:
 
 ```bash
