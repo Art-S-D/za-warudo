@@ -43,7 +43,7 @@ def next_char(prefix, charset=DEFAULT_CHARSET, iterations=100_000,  try_password
         timings[c] = []
     for i in tqdm(range(iterations * len(charset))):
         c = charset[i % len(charset)]
-        is_correct, time = send_request(prefix + c)
+        is_correct, time = try_password(prefix + c)
         if is_correct:
             raise PasswordFoundException(prefix + c)
         timings[c].append(time)
@@ -55,7 +55,7 @@ def attack(charset=DEFAULT_CHARSET, iterations=100_000, try_password=compare_pas
     password = ""
     while True:
         try:
-            c = next_char(password, charset, iterations)
+            c = next_char(password, charset, iterations, try_password)
             password += c
             print("current password:", password)
         except PasswordFoundException as p:
