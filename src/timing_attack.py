@@ -71,7 +71,7 @@ if __name__ == "__main__":
                         help="the letters to that will form the password",
                         default=DEFAULT_CHARSET)
     parser.add_argument("-m", "--mode",
-                        help="try the attach through the network or directly via python",
+                        help="try the attach through the network or directly via python, 'network' or 'local'",
                         default="network")
     args = parser.parse_args()
 
